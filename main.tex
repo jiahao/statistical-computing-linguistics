@@ -1,14 +1,25 @@
-\documentclass{article}
+\documentclass[11pt]{asaproc}
 
 \usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{epigraph}
 
 % Use an APL-friendly font
 \usepackage{fontspec}
+\usepackage{mathptmx}
 %Download this font from
 %http://misc.aplteam.com/apl385.ttf
 \setmonofont{APL385}
+
+\lstdefinelanguage{apl}{
+  basicstyle=\small\ttfamily,
+  showspaces=false,
+  showstringspaces=false,
+  morecomment=[l]{⍝},
+  commentstyle={},
+  morestring=[b]',
+}
 
 \lstdefinelanguage{julia}{
   basicstyle=\small\ttfamily,
@@ -57,15 +68,15 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 
-\bibliographystyle{siam}
+\bibliographystyle{plainyr}
 
-\title{Linguistic relativity and programming languages}
+\title{Linguistic Relativity and Programming Languages}
 
-\author{%
+\author{
     Jiahao Chen
     \thanks{Computer Science and Artificial Intelligence Laboratory,
-           Massachusetts Institute of Technology,
-           Cambridge, Massachusetts, 02139 ({\tt jiahao@mit.edu})}
+               Massachusetts Institute of Technology,
+               Cambridge, Massachusetts, 02139 ({\tt jiahao@mit.edu})}
     %
     %\and
     %Alan Edelman
@@ -83,92 +94,82 @@
 My abstract.
 \end{abstract}
 
+\begin{keywords}
+    programming languages
+\end{keywords}
+
 %XXX REMOVE BEFORE FINAL SUBMISSION
 \listoftodos
 
-\section{Linguistic relativity}
+Computer
+Over the course of a PhD studentship n the time frame of
 
-\section{Split-apply-combine and a stereotypical Uber}
+title: computer lnguages - the view from the 40 yr scale; the view from the 10 yr scale
 
-\section{Uber example}
+reader believes pl choices are unchangable on the 1 yr time scale
+on large time scale, more fluid - multiple languages
 
-\section{Walking through the various implementations in a few different languages
-what are the data structures and abstractions being used?}
+Discussions comparing the pros and cons of programming languages and their suitability for a given task, say, statistical computing, can be difficult even in the best of times.
+Oftentimes, people will make absolutist statements about what ``can'' and ``cannot''
+be done in a language. On some level such statements are absurd, given that all
+sufficiently complicated programming languages are Turing complete, and therefore
+have the same computational power in the sense of Turing equivalence. Thus anything
+that can be done in one Turing-complete language \textit{must} be doable another
+Turing-complete language. Why then do people prefer a language like R for
+statistical computing over other languages like MATLAB, C, or PostScript?
+The answer must necessarily lie in ``softer'' concepts about ease of use and
+expressiveness, concepts that are hard to define precisely but are nonetheless
+responsible for shaping the adoption of programming languages.
 
-\subsection{APL}
 
-About APL
+Like it or not, programming languages come and go as experienced programmers
+retire, new programming languages are invented and gain adoption,
+and new students learn the \textit{lingua franca du jour} in their respective
+fields. Statistical computing came to prominence with PL/I in the 70s, APL in
+the 80s, and XLISP-STAT in the 90s~\cite{deLeeuw2005} before the relatively
+modern advent of R. Other fields such as computational chemistry or physics have
+never abandoned Fortran since its invention in the mid-50s~\cite{Fortran1},
+and the field has since allowed for a coexistence of other languages such as C/C++,
+Tcl~\cite{Phillips2014} and Python~\cite{scipy}.
 
-APL has only one data structure, the array.~\footnote{Some modern implementations such as Dyalog APL~\cite{dyalog15} have nonstandard extensions that provide support for object-oriented programming in the form of classes, but we won't consider them here} As such, the array is the only data structure available for the APL programmer to express computations in.
+The proliferation of programming
+languages is not even a new phenomenon - a 1972 study by eminent computer
+scientist Jean Sammet documented over 200 programming languages invented between
+1952 and 1972~\cite{Sammet1972}!
+This is an activity that looks unlikely to cease in the conceivable future.
+Given this ceaseless churn of languages, what is a domain scientist supposed to
+do about it? I argue here that more than ever, a good hard look at what languages
+provide in ways of expressiveness will be a useful notion that can persist beyond
+the useful lifespan of a language and guide future users and developers of programming
+languages to come.
 
-One implementation of the split-apply-combine workflow would be the following:
+The goal of this paper is to explore one very simple operational notion of expressiveness
+in programming languages: what abstractions exist in a given programming language
+that map onto ideas that I want to implement? Closely related is the notion of
+idiomaticness: would an experienced programmer in a particular language recognize
+and accept a given piece of code as ``idiomatic''?
+Idiomaticaness by its very nature is circular and sociological.
+The situation of these questions bear strong parallels with analogous discussions
+in linguistics, the study of \textit{human} languages.
+We borrow the concept of linguistic relativity and ask if a similar concept
+applies to programming languages.
 
-\begin{lstlisting}
-mean←{+/⍵÷⍴⍵}
-uniqfy←{⍵[⍋⍵]}∪
-∇a←v splitby k
-a←{(⍵⍷k)/v}¨uniqfy k
-∇
-sac←{(uniqfy ⍵),[1.5]mean¨(⍺ splitby ⍵)}
-\end{lstlisting}
-%
-and a typical session of the APL interpreter invoking this function might look like:
-
-\begin{lstlisting}
-u←381 1291 3992 193942 9493 381 3992 381 3992 193942
-r←5 4 4 4 5 5 5 3 5 4
-]display r sac u
-┌→─────────────────┐
-↓   381 4.333333333│
-│  1291 4          │
-│  3992 4.666666667│
-│  9493 5          │
-│193942 4          │
-└~─────────────────┘
-\end{lstlisting}
-
-A few salient features of APL are used in this implementation that are worth describing:
-
-First, the primary data structure used to implement the ``split'' stage is the nested array. The nested array has long been advocated as the primary tool for statistical computation\cite{Anscombe1981,Friendly1994}. In this case, \lstinline|splitby| produces the result
-
-\begin{lstlisting}
-]display r splitby u
-┌→──────────────────────────────┐
-│ ┌→────┐ ┌→┐ ┌→────┐ ┌→┐ ┌→──┐ │
-│ │5 5 3│ │4│ │4 5 5│ │5│ │4 4│ │
-│ └~────┘ └~┘ └~────┘ └~┘ └~──┘ │
-└∊──────────────────────────────┘
-\end{lstlisting}
-
-corresponding to the keys
-
-\begin{lstlisting}
-]display uniqfy u
-┌→────────────────────────┐
-│381 1291 3992 9493 193942│
-└~────────────────────────┘
-\end{lstlisting}
-
-One should also note that there is a long tradition of writing concise one-line solutions to various problems. For this problem, it would be considered idiomatic to provide, instead of the user-defined \lstinline|sac| function, the one-liner
-
-\begin{lstlisting}
-{⍵,[1.5]{mean¨{(⍵⍷u)/r}¨⍵}¨⍵}{⍵[⍋⍵]}∪u
-\end{lstlisting}
-
-\section{Julia}
-
-Julia's thesis is actually quite simple.
-Why not design a language that is easy for both compilers and programmers to understand?
-Why is language important anyway?
 
 \section{Linguistic relativity and programming languages}
 
-We now borrow a concept from the study of \textit{human} languages, that
-of linguistic relativity, sometimes termed the Sapir--Whorf hypothesis.
-Simply put, it is it idea that language determines or contrains cognition
-dx.doi.org/10.1016/0010-0277(76)90001-9.
+\epigraph{FAKE EPI All human things are subject to decay, and when fate
+summons, Monarchs must obey}{\textit{Mac Flecknoe \\ John Dryden}}
 
-Here are some choice quotes from the namesakes Sapir and Whorf:
+
+We now borrow a concept from the study of \textit{human} languages, that
+of linguistic relativity, sometimes termed the Sapir--Whorf hypothesis~\cite{Brown1976}.
+Simply put, it is it idea that language determines or contrains cognition.
+
+Perhaps unsurprisingly, the Sapir--Whorf hypothesis was written down by neither
+eponymous scientist, but was instead formulated as a hypothesis much
+later~\cite{Brown1976}. Nevertheless, it is instructive to reexamine the original
+writings of Sapir and Whorf.
+
 
 Human beings do not live in the objective world alone,[...] but are very much at
 the mercy of the particular language which has become the medium of expression
@@ -271,6 +272,9 @@ package as follows~\cite{Wickham2011}:
 \TODO{dplyr paper cites several other implementations, notably ``APL’s array operators (Friendly and Fox 1994)''
 Friendly M, Fox J (1994). “Using APL2 to Create an Object-Oriented Environment for Sta- tistical Computation.” Journal of Computational and Graphical Statistics, 3, 387–407.}
 
+
+\subsection{MATLAB}
+
 It turns out that MATLAB provides a higher order function, \lstinline|accumarray|,
 which is designed specifically for this task!
 
@@ -287,6 +291,70 @@ ans =
                (9493,1)                      5.0000
              (193942,1)                      4.0000
 \end{lstlisting}
+
+\section{Walking through the various implementations in a few different languages
+what are the data structures and abstractions being used?}
+
+\subsection{APL}
+
+About APL
+
+APL has only one data structure, the array.~\footnote{Some modern implementations such as Dyalog APL~\cite{dyalog15} have nonstandard extensions that provide support for object-oriented programming in the form of classes, but we won't consider them here} As such, the array is the only data structure available for the APL programmer to express computations in.
+
+One implementation of the split-apply-combine workflow would be the following:
+
+\begin{lstlisting}[language=apl]
+mean←{+/⍵÷⍴⍵}
+uniqfy←{⍵[⍋⍵]}∪
+∇a←v splitby k
+a←{(⍵⍷k)/v}¨uniqfy k
+∇
+sac←{(uniqfy ⍵),[1.5]mean¨(⍺ splitby ⍵)}
+\end{lstlisting}
+%
+and a typical session of the APL interpreter invoking this function might look like:
+
+\begin{lstlisting}[language=apl]
+u←381 1291 3992 193942 9493 381 3992 381 3992 193942
+r←5 4 4 4 5 5 5 3 5 4
+]display r sac u
+┌→─────────────────┐
+↓   381 4.333333333│
+│  1291 4          │
+│  3992 4.666666667│
+│  9493 5          │
+│193942 4          │
+└~─────────────────┘
+\end{lstlisting}
+
+A few salient features of APL are used in this implementation that are worth describing:
+
+First, the primary data structure used to implement the ``split'' stage is the nested array. The nested array has long been advocated as the primary tool for statistical computation\cite{Anscombe1981,Friendly1994}. In this case, \lstinline|splitby| produces the result
+
+\begin{lstlisting}[language=apl]
+]display r splitby u
+┌→──────────────────────────────┐
+│ ┌→────┐ ┌→┐ ┌→────┐ ┌→┐ ┌→──┐ │
+│ │5 5 3│ │4│ │4 5 5│ │5│ │4 4│ │
+│ └~────┘ └~┘ └~────┘ └~┘ └~──┘ │
+└∊──────────────────────────────┘
+\end{lstlisting}
+
+corresponding to the keys
+
+\begin{lstlisting}[language=apl]
+]display uniqfy u
+┌→────────────────────────┐
+│381 1291 3992 9493 193942│
+└~────────────────────────┘
+\end{lstlisting}
+
+One should also note that there is a long tradition of writing concise one-line solutions to various problems. For this problem, it would be considered idiomatic to provide, instead of the user-defined \lstinline|sac| function, the one-liner
+
+\begin{lstlisting}[language=apl]
+{⍵,[1.5]{mean¨{(⍵⍷u)/r}¨⍵}¨⍵}{⍵[⍋⍵]}∪u
+\end{lstlisting}
+
 
 And finally we present APL, a language familiar to the ancients but to most
 younger programmers may be barely recognizable as imperative code:
@@ -328,7 +396,11 @@ The ``apply`` stage looks like
 I won't bother to explain the syntax here, only to present a working APL code
 to highlight the alienness that Whorf wrote about.
 
-\section{Results}
+\section{Julia}
+
+Julia's thesis is actually quite simple.
+Why not design a language that is easy for both compilers and programmers to understand?
+Why is language important anyway?
 
 \section{Conclusions}
 
