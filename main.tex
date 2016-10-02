@@ -3,7 +3,6 @@
 \usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{listings}
-\usepackage{epigraph}
 
 % Use an APL-friendly font
 \usepackage{fontspec}
@@ -13,18 +12,12 @@
 \setmonofont{APL385}
 
 \lstdefinelanguage{apl}{
-  basicstyle=\small\ttfamily,
-  showspaces=false,
-  showstringspaces=false,
   morecomment=[l]{⍝},
   commentstyle={},
   morestring=[b]',
 }
 
 \lstdefinelanguage{julia}{
-  basicstyle=\small\ttfamily,
-  showspaces=false,
-  showstringspaces=false,
   keywordstyle={\textbf},
   morekeywords={if,else,elseif,while,for,begin,end,quote,try,catch,return,local,abstract,function,generated,macro,ccall,finally,typealias,break,continue,type,global,module,using,import,export,const,let,bitstype,do,in,baremodule,importall,immutable},
   escapeinside={~}{~},
@@ -32,7 +25,12 @@
   commentstyle={},
   morestring=[b]",
 }
-\lstset{language=julia, numbers=left, numberstyle=\tiny, mathescape=true}
+
+\lstset{language=julia, numbers=left, numberstyle=\tiny, mathescape=true,
+  basicstyle=\small\ttfamily,
+  showspaces=false,
+  showstringspaces=false,
+}
 
 % https://analyzethedatanotthedrivel.org/2011/08/15/typesetting-utf8-apl-code-with-the-latex-lstlisting-package/
 % set lstlisting to accept UTF8 APL text
@@ -61,12 +59,6 @@
   ^^00}
 \lst@RestoreCatcodes
 \makeatother
-
-%XXX REMOVE FOR FINAL SUBMISSION
-\usepackage{todonotes}
-\newcommand{\TODO}[1]{\todo[inline]{#1}}
-\usepackage{algorithm}
-\usepackage{algorithmic}
 
 \bibliographystyle{plainyr}
 
@@ -98,140 +90,121 @@ My abstract.
     programming languages
 \end{keywords}
 
-%XXX REMOVE BEFORE FINAL SUBMISSION
-\listoftodos
+\section{Each decade has its own programming languages}
 
-Computer
-Over the course of a PhD studentship n the time frame of
+Each discipline has its own favorite languages: applied mathematics has MATLAB,
+web applications have JavaScript, and high-performance computing still uses
+Fortran, accompanied by Python~\cite{scipy} and even Tcl~\cite{Phillips2014}.
+Statistical computing, of course, is associated strongly with R. Yet the
+boundaries of these seemingly absolute fiefdoms in the kingdom of computing
+turn out to be surprisingly malleable on the time scale of decades. Statistical
+computing came to prominence with PL/I in the 70s, APL in the 80s, and
+XLISP-STAT in the 90s before the relatively modern advent of S and
+iR~\cite{deLeeuw2005}. In truth, programming languages come and go beyond the
+time scale of single years or even PhD studentships.
 
-title: computer lnguages - the view from the 40 yr scale; the view from the 10 yr scale
+So what makes a programming language suitable for the demands of a scientific
+discipline like statistical computing?  Discussing pros and cons of different
+languages can get bogged down in absolutist statements about what ``can'' and
+``cannot'' be done in a language. On some level such statements are absurd,
+given that all sufficiently complicated programming languages are Turing
+complete, and therefore have the same computational power in the sense of
+Turing equivalence. Thus anything that can be done in one Turing-complete
+language \textit{must} be doable in another Turing-complete language. Instead,
+the answer to the question of suitability must necessarily be ensconced in
+``softer'' concepts about ease of use and expressiveness, concepts that are
+hard to define precisely but are nonetheless responsible for shaping the
+adoption of programming languages.
 
-reader believes pl choices are unchangable on the 1 yr time scale
-on large time scale, more fluid - multiple languages
-
-Discussions comparing the pros and cons of programming languages and their suitability for a given task, say, statistical computing, can be difficult even in the best of times.
-Oftentimes, people will make absolutist statements about what ``can'' and ``cannot''
-be done in a language. On some level such statements are absurd, given that all
-sufficiently complicated programming languages are Turing complete, and therefore
-have the same computational power in the sense of Turing equivalence. Thus anything
-that can be done in one Turing-complete language \textit{must} be doable another
-Turing-complete language. Why then do people prefer a language like R for
-statistical computing over other languages like MATLAB, C, or PostScript?
-The answer must necessarily lie in ``softer'' concepts about ease of use and
-expressiveness, concepts that are hard to define precisely but are nonetheless
-responsible for shaping the adoption of programming languages.
-
-
-Like it or not, programming languages come and go as experienced programmers
-retire, new programming languages are invented and gain adoption,
-and new students learn the \textit{lingua franca du jour} in their respective
-fields. Statistical computing came to prominence with PL/I in the 70s, APL in
-the 80s, and XLISP-STAT in the 90s~\cite{deLeeuw2005} before the relatively
-modern advent of R. Other fields such as computational chemistry or physics have
-never abandoned Fortran since its invention in the mid-50s~\cite{Fortran1},
-and the field has since allowed for a coexistence of other languages such as C/C++,
-Tcl~\cite{Phillips2014} and Python~\cite{scipy}.
-
-The proliferation of programming
-languages is not even a new phenomenon - a 1972 study by eminent computer
-scientist Jean Sammet documented over 200 programming languages invented between
-1952 and 1972~\cite{Sammet1972}!
-This is an activity that looks unlikely to cease in the conceivable future.
-Given this ceaseless churn of languages, what is a domain scientist supposed to
-do about it? I argue here that more than ever, a good hard look at what languages
-provide in ways of expressiveness will be a useful notion that can persist beyond
-the useful lifespan of a language and guide future users and developers of programming
-languages to come.
-
-The goal of this paper is to explore one very simple operational notion of expressiveness
-in programming languages: what abstractions exist in a given programming language
-that map onto ideas that I want to implement? Closely related is the notion of
-idiomaticness: would an experienced programmer in a particular language recognize
-and accept a given piece of code as ``idiomatic''?
-Idiomaticaness by its very nature is circular and sociological.
-The situation of these questions bear strong parallels with analogous discussions
-in linguistics, the study of \textit{human} languages.
-We borrow the concept of linguistic relativity and ask if a similar concept
-applies to programming languages.
+This paper explores how the suitability of programming languages is related to
+expressiveness: what abstractions exist in a given programming language that
+map onto ideas that a programmer would want to implement? Closely related is
+the notion of idiomaticness: would an experienced programmer in a particular
+language recognize and accept a given piece of code as ``idiomatic''?
 
 
-\section{Linguistic relativity and programming languages}
 
-\epigraph{FAKE EPI All human things are subject to decay, and when fate
-summons, Monarchs must obey}{\textit{Mac Flecknoe \\ John Dryden}}
+\subsection{Linguistic relativity and programming languages}
 
+To discuss the suitability of programming languages, I will borrow notions from
+the study of \textit{human} languages, linguistics. In particular, I will adopt
+the controversial concept of linguistic relativity~\cite{Gumperz1996}, or the
+Sapir--Whorf hypothesis~\cite{Brown1976}, and argue that the idea that (human)
+languages determine or even constrain cognition has its relevance to computer
+languages and programming.
 
-We now borrow a concept from the study of \textit{human} languages, that
-of linguistic relativity, sometimes termed the Sapir--Whorf hypothesis~\cite{Brown1976}.
-Simply put, it is it idea that language determines or contrains cognition.
+Some of the original writings of Sapir and Whorf seem particularly relevant to
+the discussion. Here are some choice quotations:
 
-Perhaps unsurprisingly, the Sapir--Whorf hypothesis was written down by neither
-eponymous scientist, but was instead formulated as a hypothesis much
-later~\cite{Brown1976}. Nevertheless, it is instructive to reexamine the original
-writings of Sapir and Whorf.
-
-
-Human beings do not live in the objective world alone,[...] but are very much at
-the mercy of the particular language which has become the medium of expression
-for their society [...] [T]he `real world' is to a large extent unconsciously
-built up on the language habits of the group.~\cite{Sapir1929}
-
+\begin{quotation}
+Human beings do not live in the objective world alone,[...] but are very much
+at the mercy of the particular language which has become the medium of
+expression for their society [...] [T]he `real world' is to a large extent
+unconsciously built up on the language habits of the group.~\cite{Sapir1929}
+\end{quotation}
 
 Sapir wrote about human languages, in particular contrasting native American
-languages like Hopi (XXX???) against Occidental languages like English. Nevertheless,
-the words he has written are very much relevant to the real of programming
-languages, which are by definition a human construct designed to abstract away
-unwanted details about computers and their low level machine codes.
-The ``language habits'' that Sapir write about originally refered to XXX
-but have their parallels in programming language abstractions. Some examples of
-these programming language habits may include:
+languages like Hopi against Occidental languages like English. Nevertheless,
+programmers would immediately recognize these words about ``language habits''
+as echoing a parallel worldview in computer languages, being themselves human
+constructs designed to abstract away unwanted, low level machine details.
+Some examples of these programming language habits may include:
 
 ``Always put data in a data frame''
 
 ``Never write for loops; vectorize your code to gain performance.''
 
-``A vector is the same as a column matrix''
-
 Some ``language habits'' can be as banal as choosing between 0- or 1-based
-indexing, leading to notoriously unproductive flame wars.
-Others are more subtle. For example, MATLAB treats vectors like column matrices,
-and therefore allow operations on one-dimensional objects like
-\lstinline|v[(2,1)]| indexing with two numbers, which are disallowed
-in many other languages like C. We can trace the different indexing behaviors
-back to different mathematical starting points---whereas most languages treat
-vectors as one-dimensional arrays, i.e.\ ``flat'' sequences of numbers, MATLAB
-by virtue of treating most objects like matrices, assumes that vectors by default
-are \textit{column} vectors, and therefore behave just matrices with one column.
+indexing, leading to notoriously unproductive flame wars.  Others are more
+subtle. For example, MATLAB treats vectors like column matrices, and therefore
+allow operations on one-dimensional objects like \lstinline|v[(2,1)]| indexing
+with two numbers, which are disallowed in many other languages like C. We can
+trace the different indexing behaviors back to different mathematical starting
+points---whereas most languages treat vectors as one-dimensional arrays, i.e.\
+``flat'' sequences of numbers, MATLAB by virtue of treating most objects like
+matrices, assumes that vectors by default are \textit{column} vectors, and
+therefore behave just matrices with one column.
 
 The fact that such discussions of language habits tend to be emotionally
-charged is also not a coincidence.
+charged is also not a coincidence. Whorf wrote:
 
+\begin{quotation}
 [E]very person [...] carries through life certain na\"ive but deeply rooted
 idea about talking and its relation to thinking. Because of their firm
 connection with speech habits that have become unconscious and automatic, these
 notions tend to be intolerant of opposition.~\cite{Whorf1956sl}
-
+\end{quotation}
 
 Replace ``talking'' with ``writing code'', and the analogy between speech and
 computer programs could hardly be plainer. An experienced programmer,
 practically by definition, internalizes the boilerplate and design patterns in
 code as ``unconscious and automatic'' idioms to be regurgitated on demand
-(preferably with an editor or IDE that helps reinforce these idioms automatically).
-To the fluent Java programmer, wrapping everything in a class must be second nature,
-just as the R user is accustomed to seeing data in a data frame, or whitespace
-sensitivity to the Pythonista.
-Allowing for code as a generalization of speech, one could argue that Whorf's
-observation predicted the very phenomenon of flame wars over programming language
-design!
+(preferably with an editor or IDE that helps reinforce these idioms
+automatically). To the fluent Java programmer, wrapping everything in a class
+must be second nature, just as the R user is accustomed to seeing data in a
+data frame, or whitespace sensitivity to the Pythonista.  Allowing for code as
+a generalization of speech, one could argue that Whorf's observation predicted
+the very phenomenon of flame wars over programming language design!
 
+In the rest of this paper, I will make use of another insight from Whorf:
 
+\begin{quotation}
 Through [linguistic knowledge], the world as seen from the diverse viewpoints of
 other social groups, that we have thought of as alien, becomes intelligible in
 new terms. Alienness turns into a new and often clarifyign way of looking at
 things.~\cite{Whorf1956lmr}
+\end{quotation}
+
+I will present a simple, stereotypical data science task and show how solutions
+may be implemented in different computer languages, not all of which may
+necessarily be familiar to the reader or the typical user of statistical
+computing. This side-by-side comparison of the familiar and unfamiliar will
+hopefully aid to highlight similarities and differences between the
+abstractions expressed within the codes.
 
 
-\section{A simple data science task}
+
+\section{A simple data science task: split, apply, combine}
 
 Here is a simple data analysis task that is perhaps emblematic of our house
 sharing, carpooling times. Suppose I am a data scientist working at a ride
@@ -246,19 +219,20 @@ rating &
 5 & 4 & 4 & 4 & 5 & 5 & 5 & 3 & 5 & 4
 \end{tabular}
 
-Suppose also that I am interested in working out the average rating given
-by each unique userid.
-A seasoned R user might immediately recognize this task as a
-``split-apply-combine'' problem, which could be solved using the \lstinline|dplyr|
-package as follows~\cite{Wickham2011}:
+Suppose also that I am interested in working out the average rating given by
+each unique user. A seasoned R user might immediately recognize this task
+as a ``split-apply-combine'' problem, which could be solved using the
+\lstinline|dplyr| package as follows~\cite{Wickham2011}:
 
-\begin{lstlisting}
-> library(dplyr);
-> userid = c(381, 1291, 3992, 193942, 9493, 381,
-    3992, 381, 3992, 193942)
-> rating = c(5, 4, 4, 4, 5, 5, 5, 3, 5, 4)
-> mycar = data.frame(rating, userid)
-> summarize(group_by(mycar, userid), avgrating=mean(rating))
+\begin{lstlisting}{R}
+library(dplyr);
+userid = c(381, 1291, 3992, 193942, 9493, 381,
+  3992, 381, 3992, 193942)
+rating = c(5, 4, 4, 4, 5, 5, 5, 3, 5, 4)
+mycar = data.frame(rating, userid)
+summarize(group_by(mycar, userid), avgrating=mean(rating))
+\end{lstlisting}
+\begin{verbatim}
 # A tibble: 5 x 2
   userid avgrating
    <dbl>     <dbl>
@@ -267,22 +241,34 @@ package as follows~\cite{Wickham2011}:
 3   3992  4.666667
 4   9493  5.000000
 5 193942  4.000000
+\end{verbatim}
+
+The key computation is expressed by the \lstinline|summarize| function, a
+higher-order function which combines the data in the \lstinline|mycar| data
+frame after being split by (grouped by) \lstinline|userid| and had the function
+\lstinline|mean| applied to each group.  This function is provided by
+\lstinline|dplyr| and is perfectly well-suited to the split-apply-combine task.
+Now let's look at how the same idiom can be expressed in other programming
+languages.
+
+
+
+\section{MATLAB: split-apply-combine on matrices}
+
+MATLAB is more often thought of as a language for scientific computing rather
+than statistical computing. Nevertheless, MATLAB provides a higher order
+function, \lstinline|accumarray|, which is perfectly suited to
+split-apply-combine computations. Even MATLAB seems to admit that
+\lstinline|accumarray| is ``under-appreciated''~\cite{underappreciated};
+nevertheless, the function does the job admirably:
+
+\begin{lstlisting}{Matlab}
+userids = [381; 1291; 3992; 193942; 9493; 381; 3992; 381; 3992;
+  193942];
+ratings = [5; 4; 4; 4; 5; 5; 5; 3; 5; 4];
+accumarray(userids,ratings,[],@mean,[],true)
 \end{lstlisting}
-
-\TODO{dplyr paper cites several other implementations, notably ``APL’s array operators (Friendly and Fox 1994)''
-Friendly M, Fox J (1994). “Using APL2 to Create an Object-Oriented Environment for Sta- tistical Computation.” Journal of Computational and Graphical Statistics, 3, 387–407.}
-
-
-\subsection{MATLAB}
-
-It turns out that MATLAB provides a higher order function, \lstinline|accumarray|,
-which is designed specifically for this task!
-
-\begin{lstlisting}
->> userids = [381 1291 3992 193942 9493 381 3992 381 3992 193942];
->> ratings = [5 4 4 4 5 5 5 3 5 4];
->> accumarray(userids',ratings',[],@mean,[],true)
-
+\begin{verbatim}
 ans =
 
                 (381,1)                      4.3333
@@ -290,18 +276,45 @@ ans =
                (3992,1)                      4.6667
                (9493,1)                      5.0000
              (193942,1)                      4.0000
-\end{lstlisting}
+\end{verbatim}
 
-\section{Walking through the various implementations in a few different languages
-what are the data structures and abstractions being used?}
+Unlike R, which was designed from the beginning around data frames as one of
+the fundamental data structures, MATLAB was originally designed with matrices
+as the sole data structure~\cite{Moler1980,Moler1982}. While MATLAB as of
+R2013b now provides tables as a data structure~\cite{Shure2013}, most of the
+base language is still built around matrices and does not work with tables.
+\lstinline|accumarray| is one example of the base language that is designed
+around matrices.
 
-\subsection{APL}
+It can be difficult to determine from the documentation of
+\lstinline|accumarray|~\cite{accumarray} that it is a function that solves the
+split-apply-combine problem. The first complete sentence in the documentation
+states that \lstinline|A=accumarray(val,subs)| ``returns array A by
+accumulating elements of vector \lstinline|val| using the subscripts
+\lstinline|subs|''. In other words, the most basic use of
+\lstinline|accumarray| is to split data in  \lstinline|val| into subsets
+grouped by the values of their corresponding entries in \lstinline|val|, with
+the summation (accumulation) function applied to each subset. It is clear that
+the function is generalizable: a different function can be specified in the
+fourth positional argument (MATLAB does not support keyword arguments), but in
+order to do so, a default argument must be specified for the third argument.
+Finally, the last argument \lstinline|true| specifies that the output should be
+returned as a sparse matrix, otherwise the result would be a $193942\times1$
+dense matrix with most of the entries zero.
 
-About APL
 
-APL has only one data structure, the array.~\footnote{Some modern implementations such as Dyalog APL~\cite{dyalog15} have nonstandard extensions that provide support for object-oriented programming in the form of classes, but we won't consider them here} As such, the array is the only data structure available for the APL programmer to express computations in.
 
-One implementation of the split-apply-combine workflow would be the following:
+\section{APL: split-apply-combine using array operations}
+
+APL is a language that is built around a single data structure, the
+array.~\footnote{Some modern implementations such as Dyalog APL~\cite{dyalog15}
+have nonstandard extensions that provide support for object-oriented
+programming in the form of classes, but we won't consider them here.} APL does
+not provide a standard idiom for solving the split-apply-combine problem;
+instead, the APL programmer must express split-apply-combine on their own using
+lower-level array computations.
+
+One implementation of split-apply-combine might look like this:
 
 \begin{lstlisting}[language=apl]
 mean←{+/⍵÷⍴⍵}
@@ -309,15 +322,12 @@ uniqfy←{⍵[⍋⍵]}∪
 ∇a←v splitby k
 a←{(⍵⍷k)/v}¨uniqfy k
 ∇
-sac←{(uniqfy ⍵),[1.5]mean¨(⍺ splitby ⍵)}
-\end{lstlisting}
-%
-and a typical session of the APL interpreter invoking this function might look like:
-
-\begin{lstlisting}[language=apl]
+summarizeby←{(uniqfy ⍵),[1.5]mean¨(⍺ splitby ⍵)}
 u←381 1291 3992 193942 9493 381 3992 381 3992 193942
 r←5 4 4 4 5 5 5 3 5 4
-]display r sac u
+]display r summarizeby u
+\end{lstlisting}
+\begin{verbatim}
 ┌→─────────────────┐
 ↓   381 4.333333333│
 │  1291 4          │
@@ -325,86 +335,84 @@ r←5 4 4 4 5 5 5 3 5 4
 │  9493 5          │
 │193942 4          │
 └~─────────────────┘
-\end{lstlisting}
+\end{verbatim}
 
-A few salient features of APL are used in this implementation that are worth describing:
+APL functions can take at most two arguments; further arguments must be
+specified in ``concealed arguments'', which are variables in global scope.
+This solution chose to hard code the function being applied (\lstinline|mean|)
+into the higher-level \lstinline|summarizeby| function. Furthermore, dyadic APL
+functions must be specified in place, which suggests the name
+\lstinline|summarizeby| rather than \lstinline|summarize| as being more natural
+to an English speaker. Notably, the expression \lstinline|r summarizeby u|
+aligns with the SVO (subject-verb-object) order of English, which can explain
+the intuition for why the name \lstinline|summarizeby| may be preferred.
 
-First, the primary data structure used to implement the ``split'' stage is the nested array. The nested array has long been advocated as the primary tool for statistical computation\cite{Anscombe1981,Friendly1994}. In this case, \lstinline|splitby| produces the result
+The primary data structure used to implement the ``split'' stage is the nested
+array, which allows for the representation of ragged matrices, or list of lists
+with unequal lengths. The nested array has long been advocated as the primary
+tool for statistical computation\cite{Anscombe1981,Friendly1994}. In this case,
+the nested array is generated by the \lstinline|(⍵⍷k)/v¨| expression, which
+extracts each subset of \lstinline|v| by common values \lstinline|k|. The
+\lstinline|splitby| function produces the result
 
-\begin{lstlisting}[language=apl]
+\begin{lstlisting}{apl}
 ]display r splitby u
+\end{lstlisting}
+\begin{verbatim}
 ┌→──────────────────────────────┐
 │ ┌→────┐ ┌→┐ ┌→────┐ ┌→┐ ┌→──┐ │
 │ │5 5 3│ │4│ │4 5 5│ │5│ │4 4│ │
 │ └~────┘ └~┘ └~────┘ └~┘ └~──┘ │
 └∊──────────────────────────────┘
-\end{lstlisting}
+\end{verbatim}
 
 corresponding to the keys
 
-\begin{lstlisting}[language=apl]
+\begin{lstlisting}{apl}
 ]display uniqfy u
+\end{lstlisting}
+\begin{verbatim}
 ┌→────────────────────────┐
 │381 1291 3992 9493 193942│
 └~────────────────────────┘
-\end{lstlisting}
+\end{verbatim}
 
-One should also note that there is a long tradition of writing concise one-line solutions to various problems. For this problem, it would be considered idiomatic to provide, instead of the user-defined \lstinline|sac| function, the one-liner
+The ``apply'' stage of the computation uses APL's built-in diaeresis
+(\lstinline|¨|, ``over each'') function. Finally, the ``combine'' stage
+produces a two-column matrix, with the first column containing the unique keys
+and the second column containing the required means. This matrix is produced by
+the \lstinline|,[1.5]| expression, which ``laminates'' its two arguments
+together.
 
-\begin{lstlisting}[language=apl]
+Notably, the APL solution might be considered by some expert programmers to be
+not idiomatic. Instead, there is a long tradition of writing concise one-line
+APL solutions to various problems, and for this problem, such a solution might
+look like
+
+\begin{lstlisting}{language=apl}
 {⍵,[1.5]{mean¨{(⍵⍷u)/r}¨⍵}¨⍵}{⍵[⍋⍵]}∪u
 \end{lstlisting}
 
 
-And finally we present APL, a language familiar to the ancients but to most
-younger programmers may be barely recognizable as imperative code:
-
-\lstinputlisting{code/summarize.apl}
-
-A few details of the APL solution are worth explanining.
-
-Defined functions in APL can take at most two arguments.
-Further arguments must be specified in ``concealed arguments'', which are variables in global scope.
-
-The APL code is equivalent to this one-liner
-
-\begin{lstlisting}
-mean←{+/⍵÷⍴⍵}
-∇a←v sac k;u
-u←{⍵[⍋⍵]}∪k
-a←u,[1.5]{⊂mean(k=⍵)/v}¨u
-∇
-\end{lstlisting}
-
-HEre is the ``split'' stage in APL:
-
-\begin{lstlisting}
-     {(u=⍵)/r}¨{⍵[⍋⍵]}∪u
-5 5 3  4  4 5 5  5  4 4
-\end{lstlisting}
-
-which creates a nested array with all ratings for a particular userid in u.
-
-The ``apply`` stage looks like
-
-\begin{lstlisting}
-    mean¨{(u=⍵)/r}¨{⍵[⍋⍵]}∪u
-5 5 3  4  4 5 5  5  4 4
-\end{lstlisting}
-
-
-I won't bother to explain the syntax here, only to present a working APL code
-to highlight the alienness that Whorf wrote about.
 
 \section{Julia}
 
-Julia's thesis is actually quite simple.
-Why not design a language that is easy for both compilers and programmers to understand?
+The last language I will consider here is Julia, a general-purpose programming
+language that was originally designed for technical
+computing~\cite{Bezanson2015}.  Julia's thesis
+is actually quite simple.  Why not design a language that is easy for both
+compilers and programmers to understand?
 Why is language important anyway?
+
+
 
 \section{Conclusions}
 
 \section*{Acknowledgments}
+
+I would like to thank the Julia developer community for many useful
+discussions, in particular Alan Edelman for the discussion of how
+\lstinline|accumarray| may be implemented in Julia.
 
 \bibliography{bib/bib}
 
