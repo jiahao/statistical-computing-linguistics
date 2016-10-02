@@ -3,6 +3,7 @@
 \usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{natbib}
 
 % Use an APL-friendly font
 \usepackage{fontspec}
@@ -60,7 +61,7 @@
 \lst@RestoreCatcodes
 \makeatother
 
-\bibliographystyle{plainyr}
+\bibliographystyle{apalike}
 
 \title{Linguistic Relativity and Programming Languages}
 
@@ -83,24 +84,31 @@
 \maketitle
 
 \begin{abstract}
-My abstract.
+The use of programming languages can wax and wane across the decades. We
+examine the split-apply-combine pattern that is common in statistical
+computing, and consider how its invocation or implementation in languages like
+MATLAB and APL differ from R/dplyr. The differences in spelling illustrate how
+the concept of linguistic relativity applies to programming languages in ways
+that are analogous to human languages. Finally, we discuss how Julia, by being
+a high performance yet general purpose dynamic language, allows its users to
+express different abstractions to suit individual preferences.
 \end{abstract}
 
 \begin{keywords}
-    programming languages
+    programming languages, R, MATLAB, APL, linguistic relativity, Julia
 \end{keywords}
 
 \section{Each decade has its own programming languages}
 
 Each discipline has its own favorite languages: applied mathematics has MATLAB,
 web applications have JavaScript, and high-performance computing still uses
-Fortran, accompanied by Python~\cite{scipy} and even Tcl~\cite{Phillips2014}.
+Fortran, accompanied by Python~\citep{scipy} and even Tcl~\citep{Phillips2014}.
 Statistical computing, of course, is associated strongly with R. Yet the
 boundaries of these seemingly absolute fiefdoms in the kingdom of computing
 turn out to be surprisingly malleable on the time scale of decades. Statistical
 computing came to prominence with PL/I in the 70s, APL in the 80s, and
 XLISP-STAT in the 90s before the relatively modern advent of S and
-iR~\cite{deLeeuw2005}. In truth, programming languages come and go beyond the
+iR~\citep{deLeeuw2005}. In truth, programming languages come and go beyond the
 time scale of single years or even PhD studentships.
 
 So what makes a programming language suitable for the demands of a scientific
@@ -128,8 +136,8 @@ language recognize and accept a given piece of code as ``idiomatic''?
 
 To discuss the suitability of programming languages, I will borrow notions from
 the study of \textit{human} languages, linguistics. In particular, I will adopt
-the controversial concept of linguistic relativity~\cite{Gumperz1996}, or the
-Sapir--Whorf hypothesis~\cite{Brown1976}, and argue that the idea that (human)
+the controversial concept of linguistic relativity~\citep{Gumperz1996}, or the
+Sapir--Whorf hypothesis~\citep{Brown1976}, and argue that the idea that (human)
 languages determine or even constrain cognition has its relevance to computer
 languages and programming.
 
@@ -140,7 +148,7 @@ the discussion. Here are some choice quotations:
 Human beings do not live in the objective world alone,[...] but are very much
 at the mercy of the particular language which has become the medium of
 expression for their society [...] [T]he `real world' is to a large extent
-unconsciously built up on the language habits of the group.~\cite{Sapir1929}
+unconsciously built up on the language habits of the group.~\citep{Sapir1929}
 \end{quotation}
 
 Sapir wrote about human languages, in particular contrasting native American
@@ -172,7 +180,7 @@ charged is also not a coincidence. Whorf wrote:
 [E]very person [...] carries through life certain na\"ive but deeply rooted
 idea about talking and its relation to thinking. Because of their firm
 connection with speech habits that have become unconscious and automatic, these
-notions tend to be intolerant of opposition.~\cite{Whorf1956sl}
+notions tend to be intolerant of opposition.~\citep{Whorf1956sl}
 \end{quotation}
 
 Replace ``talking'' with ``writing code'', and the analogy between speech and
@@ -192,7 +200,7 @@ In the rest of this paper, I will make use of another insight from Whorf:
 Through [linguistic knowledge], the world as seen from the diverse viewpoints of
 other social groups, that we have thought of as alien, becomes intelligible in
 new terms. Alienness turns into a new and often clarifyign way of looking at
-things.~\cite{Whorf1956lmr}
+things.~\citep{Whorf1956lmr}
 \end{quotation}
 
 I will present a simple, stereotypical data science task and show how solutions
@@ -222,7 +230,7 @@ rating &
 Suppose also that I am interested in working out the average rating given by
 each unique user. A seasoned R user might immediately recognize this task
 as a ``split-apply-combine'' problem, which could be solved using the
-\lstinline|dplyr| package as follows~\cite{Wickham2011}:
+\lstinline|dplyr| package as follows~\citep{Wickham2011}:
 
 \begin{lstlisting}{R}
 library(dplyr);
@@ -259,7 +267,7 @@ MATLAB is more often thought of as a language for scientific computing rather
 than statistical computing. Nevertheless, MATLAB provides a higher order
 function, \lstinline|accumarray|, which is perfectly suited to
 split-apply-combine computations. Even MATLAB seems to admit that
-\lstinline|accumarray| is ``under-appreciated''~\cite{underappreciated};
+\lstinline|accumarray| is ``under-appreciated''~\citep{underappreciated};
 nevertheless, the function does the job admirably:
 
 \begin{lstlisting}{Matlab}
@@ -280,14 +288,14 @@ ans =
 
 Unlike R, which was designed from the beginning around data frames as one of
 the fundamental data structures, MATLAB was originally designed with matrices
-as the sole data structure~\cite{Moler1980,Moler1982}. While MATLAB as of
-R2013b now provides tables as a data structure~\cite{Shure2013}, most of the
+as the sole data structure~\citep{Moler1980,Moler1982}. While MATLAB as of
+R2013b now provides tables as a data structure~\citep{Shure2013}, most of the
 base language is still built around matrices and does not work with tables.
 \lstinline|accumarray| is one example of the base language that is designed
 around matrices.
 
 It can be difficult to determine from the documentation of
-\lstinline|accumarray|~\cite{accumarray} that it is a function that solves the
+\lstinline|accumarray|~\citep{accumarray} that it is a function that solves the
 split-apply-combine problem. The first complete sentence in the documentation
 states that \lstinline|A=accumarray(val,subs)| ``returns array A by
 accumulating elements of vector \lstinline|val| using the subscripts
@@ -307,7 +315,7 @@ dense matrix with most of the entries zero.
 \section{APL: split-apply-combine using array operations}
 
 APL is a language that is built around a single data structure, the
-array.~\footnote{Some modern implementations such as Dyalog APL~\cite{dyalog15}
+array.~\footnote{Some modern implementations such as Dyalog APL~\citep{dyalog15}
 have nonstandard extensions that provide support for object-oriented
 programming in the form of classes, but we won't consider them here.} APL does
 not provide a standard idiom for solving the split-apply-combine problem;
@@ -350,7 +358,7 @@ the intuition for why the name \lstinline|summarizeby| may be preferred.
 The primary data structure used to implement the ``split'' stage is the nested
 array, which allows for the representation of ragged matrices, or list of lists
 with unequal lengths. The nested array has long been advocated as the primary
-tool for statistical computation\cite{Anscombe1981,Friendly1994}. In this case,
+tool for statistical computation\citep{Anscombe1981,Friendly1994}. In this case,
 the nested array is generated by the \lstinline|(⍵⍷k)/v¨| expression, which
 extracts each subset of \lstinline|v| by common values \lstinline|k|. The
 \lstinline|splitby| function produces the result
@@ -389,24 +397,178 @@ not idiomatic. Instead, there is a long tradition of writing concise one-line
 APL solutions to various problems, and for this problem, such a solution might
 look like
 
-\begin{lstlisting}{language=apl}
+\begin{lstlisting}{apl}
 {⍵,[1.5]{mean¨{(⍵⍷u)/r}¨⍵}¨⍵}{⍵[⍋⍵]}∪u
 \end{lstlisting}
 
+To summarize, the three solutions we have seen so far each have different code
+organizations and work on different data structures. In tabular form:
+
+\begin{tabular}{c|ccc}
+ & R/dplyr & MATLAB & APL\tabularnewline
+\hline
+split & summarize & accumarray & splitby\tabularnewline
+apply & (column constructor) & (positional argument) & ¨\tabularnewline
+combine & summarize & accumarray & summarizeby\tabularnewline
+data structure & data frame (tibble) & matrix & array\tabularnewline
+\end{tabular}
 
 
-\section{Julia}
+\section{Julia: flexibility of idioms}
 
 The last language I will consider here is Julia, a general-purpose programming
 language that was originally designed for technical
-computing~\cite{Bezanson2015}.  Julia's thesis
-is actually quite simple.  Why not design a language that is easy for both
-compilers and programmers to understand?
-Why is language important anyway?
+computing~\citep{Bezanson2015}.  Julia's thesis is to be a language that is
+easy for both compilers and programmers to understand, in the sense that it is
+a high level dynamic language with language constructs that facilitate compiler
+analysis and generation of efficient code.
+
+The result of Julia's careful design for expressiveness and performance allows
+for the different solutions above for the split-apply-combine problem to all be
+expressible in the same language.
+The solution to split-apply-combine in R/dplyr derives its performance from an
+underlying implementation of dplyr in C++ (via Rcpp). In contrast, all the
+Julia solutions in this section are written in pure Julia. The result is that
+Julia users can also be Julia developers without necessarily having to learn
+another language to work on the underlying implementation which does all the
+heavy lifting. Another advantage is that Julia users can experiment with
+different idioms and data structures without being confined to just those that
+have well-optimized implementations, and enjoy reasonable performance in many
+cases.
+
+For example, the R/dplyr approach can be spelled in two different ways using
+the \lstinline|DataFrames.jl| package:
+
+\begin{lstlisting}{julia}
+using DataFrames
+df = DataFrame(
+  userids=[381, 1291, 3992, 193942, 9494, 381, 3992, 381, 3992,
+  193942], ratings=[5,4,4,4,5,5,5,3,5,4]);
+by(df, :userids, df->mean(df[:ratings])) #Same as next line
+aggregate(df, :userids, mean)
+\end{lstlisting}
+\begin{verbatim}
+5×2 DataFrames.DataFrame
+│ Row │ userids │ ratings_mean │
+├─────┼─────────┼──────────────┤
+│ 1   │ 381     │ 4.33333      │
+│ 2   │ 1291    │ 4.0          │
+│ 3   │ 3992    │ 4.66667      │
+│ 4   │ 9494    │ 5.0          │
+│ 5   │ 193942  │ 4.0          │
+\end{verbatim}
+
+The solution to split-apply-combine in R/dplyr derives its performance from an
+underlying implementation of dplyr in C++ (via Rcpp). In contrast, the Julia
+solutions are written in pure Julia. The result is that Julia users can also be
+Julia developers without necessarily having to learn another language to work
+on the underlying implementation which does all the heavy lifting. Another
+advantage is that Julia users can experiment with different idioms and data
+structures without being confined to just those that have well-optimized
+implementations, and enjoy reasonable performance in many cases.
+
+For example, a user who is unfamiliar with data frames and may prefer instead
+an array-based solution may choose to implement an APL-style solution using a
+simple list comprehension:
+
+\begin{lstlisting}{julia}
+userids=[381, 1291, 3992, 193942, 9494, 381, 3992, 381, 3992, 193942]
+ratings=[5,4,4,4,5,5,5,3,5,4]
+u = unique(userids)
+[(u[i], mean(ratings[userids.==u[i]])) for i=1:5]
+\end{lstlisting}
+\begin{verbatim}
+5-element Array{Tuple{Any,Any},1}:
+ (381,4.333333333333333)
+ (1291,4.0)
+ (3992,4.666666666666667)
+ (193942,4.0)
+ (9494,5.0)
+\end{verbatim}
+
+The list comprehension approach is simple and concise, if not particularly
+fast. Nevertheless, the ability to rewrite a solution multiple different way in
+Julia allows for Julia users to experiment with different approaches in order
+to find one with the most acceptable performance. For example, a Julia user may
+choose to rewrite the list comprehension solution by writing out for loops
+explicitly, something that is discouraged in all the other languages discussed
+here (which promote the ``vectorize your code'' habit). One such implementation
+example might look like the following:
+
+\begin{lstlisting}{julia}
+counts = []
+uuserids=[]
+uratings=[]
+for i in eachindex(userids)
+    j = findfirst(uuserids, userids[i])
+    if j==0 #not found
+        push!(uuserids, userids[i])
+        push!(uratings, ratings[i])
+        push!(counts, 1)
+    else #already seen
+        uratings[j] += ratings[i]
+        counts[j] += 1
+    end
+end
+[uuserids uratings./counts]
+\end{lstlisting}
+\begin{verbatim}
+5x2 Array{Any,2}:
+    381  4.33333
+   1291  4.0
+   3992  4.66667
+ 193942  4.0
+   9494  5.0
+\end{verbatim}
+
+Finally, a Julia user may later recognize this code as implementing the
+split-apply-combine idiom and choose to refactor this code into a reusable
+function akin to \lstinline|accumarray|. In fact, \lstinline|accumarray| itself
+can be implemented in Julia with just a few lines of code:
+
+\begin{lstlisting}{julia}
+function accumarray(subs, val, fun=sum, fillval=0;
+        sz=maximum(subs,1), issparse=false)
+
+    counts = Dict()
+    for i in 1:size(subs,1)
+        counts[subs[i, :]] = [get(counts, subs[i,:], []),
+           val[i...]]
+    end
+    A=fill(fillval, sz)
+    for (k, v) in counts
+        A[k...]= fun(v)
+    end
+    issparse ? sparse(A) : A
+end
+\end{lstlisting}
+
+Thus even though \lstinline|accumarray| does not exist in the base Julia
+library, an experienced user can, without much difficulty, iterate rapidly from
+a na\"ive slow solution to a fast, specialized solution, and further to a fast,
+general purpose solution. Having multiple options gives Julia users the
+possibility of choosing the best tradeoff between development time and actual
+execution time when deployed on large data sets.
 
 
 
-\section{Conclusions}
+\section{Conclusion}
+
+Many programming languages dictate one preferred way of doing things, which
+often encompasses an unwritten set of ``language habits'' as well as a choice
+of preferred data structures. In particular, ``vectorize your code'' is an
+idiom that is common to R, MATLAB and APL, three languages that are currently
+or in the past been popular for statistical computing. One reason high level
+languages have a preferred way of expression is because those idioms over a few
+preferred data structures have highly optimized implementations and are well
+integrated into a comprehensive standard library. As a result, these idioms
+shape the way experienced programmers think about solving problems in those
+languages.
+
+The promise of Julia, as a high level dynamic language with reasonable
+performance, allows for  approach i  simple problems.  for the preferred  Julia
+allows programmers the
+flexibility allowed
 
 \section*{Acknowledgments}
 
